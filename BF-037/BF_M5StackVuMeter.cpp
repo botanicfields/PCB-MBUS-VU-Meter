@@ -1,7 +1,6 @@
 // Copyright 2021 BotanicFields, Inc.
 // VU meter on M5Stack
 
-#include <M5Stack.h>
 #include <M5GFX.h>
 #include "BF_M5StackVuMeter.h"
 
@@ -22,7 +21,6 @@ void make_vu_panel()
   lcd.init();
   lcd.setRotation(1);
   lcd.setBrightness(64);
-  lcd.setColorDepth(24);
 
   // create a sprite of VU-meter panel
   panel.setColorDepth(2);

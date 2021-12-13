@@ -9,7 +9,7 @@
 esp_adc_cal_characteristics_t adc_chars;
 
 // for control loop
-const int loop_ms(100);  // 100ms
+const int loop_ms(50);  // 50ms
 int last_ms(0);
 
 void setup()
@@ -18,10 +18,9 @@ void setup()
   const bool sd_enable(true);
   const bool serial_enable(true);
   const bool i2c_enable(true);
-  M5.begin(!lcd_enable, sd_enable, serial_enable, i2c_enable);
+  M5.begin(!lcd_enable, !sd_enable, serial_enable, i2c_enable);
 
   // analog to digital converter
-  adc_power_on();
   adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_7);                    // ADC1 Channel 7 = GPIO35
   adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_0);                    // ADC1 Channel 0 = GPIO36
   adc1_config_channel_atten(ADC1_CHANNEL_7, ADC_ATTEN_DB_11);  // attenuation 11dB
