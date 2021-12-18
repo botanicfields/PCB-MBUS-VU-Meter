@@ -10,7 +10,7 @@ esp_adc_cal_characteristics_t adc_chars;
 
 // for control loop
 const int loop_ms(50);  // 50ms
-int last_ms(0);
+unsigned int last_ms(0);
 
 void setup()
 {
