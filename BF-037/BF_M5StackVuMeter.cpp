@@ -125,6 +125,7 @@ void make_vu_panel()
 void show_vu_meter(int location_x, int location_y, const char* left_right, int level1, int level2)
 {
   const float pi(3.141592653589793f);
+  const float vu_3(3468.0f);
 
   // create canvas
   canvas.setColorDepth(2);
@@ -144,25 +145,26 @@ void show_vu_meter(int location_x, int location_y, const char* left_right, int l
   canvas.setTextColor(palette2, palette1);
   canvas.drawString(left_right, 20, 100);
 
-  // needle black
-  float a = (0.25f + (level1 / 3468.0f)) * pi;
-  int x = 160.0f - 190.0f * cos(a);
-  int y = 200.0f - 190.0f * sin(a);
-  canvas.drawLine(161, 160, x + 1, y,     palette2);
-  canvas.drawLine(159, 160, x - 1, y,     palette2);
-  canvas.drawLine(160, 161, x,     y + 1, palette2);
-  canvas.drawLine(160, 159, x,     y - 1, palette2);
-
   // needle red
+  float a = (0.25f + (level2 / vu_3)) * pi;
+  int   x = 160.0f - 190.0f * cos(a);
+  int   y = 200.0f - 190.0f * sin(a);
   if (level2 >= 0) {
-    a = (0.25f + (level2 / 3468.0f)) * pi;
-    x = 160.0f - 190.0f * cos(a);
-    y = 200.0f - 190.0f * sin(a);
     canvas.drawLine(161, 160, x + 1, y,     palette3);
     canvas.drawLine(159, 160, x - 1, y,     palette3);
     canvas.drawLine(160, 161, x,     y + 1, palette3);
     canvas.drawLine(160, 159, x,     y - 1, palette3);
   }
+
+  // needle black
+  a = (0.25f + (level1 / vu_3)) * pi;
+  x = 160.0f - 190.0f * cos(a);
+  y = 200.0f - 190.0f * sin(a);
+  canvas.drawLine(161, 160, x + 1, y,     palette2);
+  canvas.drawLine(159, 160, x - 1, y,     palette2);
+  canvas.drawLine(160, 161, x,     y + 1, palette2);
+  canvas.drawLine(160, 159, x,     y - 1, palette2);
+
   // put into the LCD
   canvas.pushSprite(location_x, location_y);
   canvas.deleteSprite();

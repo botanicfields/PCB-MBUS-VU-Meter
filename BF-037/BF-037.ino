@@ -5,12 +5,21 @@
 #include "esp_adc_cal.h"   // for esp_adc_cal_characteristics_t
 #include "BF_M5StackVuMeter.h"
 
-// for analog to degital converter
-esp_adc_cal_characteristics_t adc_chars;
-
 // for control loop
 const int loop_ms(50);  // 50ms
 unsigned int last_ms(0);
+
+// for analog to degital converter
+esp_adc_cal_characteristics_t adc_chars;
+
+const int offset(142);  // offset 142mV at ground-level on ESP32 ADC 
+const int vu_0(1227);   // 0VU = 1227mV
+const int vu_diff   = vu_0 / ( 300 / loop_ms);  //  300ms for settling from -20VU to 0VU
+const int peak_diff = vu_0 / (8000 / loop_ms);  // 8000ms for recovery from 0VU to -20VU
+int last_vu_r(0);
+int last_vu_l(0);
+int last_peak_r(0);
+int last_peak_l(0);
 
 void setup()
 {
@@ -52,8 +61,18 @@ void loop()
   int adc_7 = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_7), &adc_chars);
   int adc_0 = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_0), &adc_chars);
 
-  show_vu_meter(0,   0, "L", adc_7);
-  show_vu_meter(0, 120, "R", adc_0);
+  // for ESP32 ADC
+  adc_7 = (adc_7 - offset) * vu_0 / (vu_0 - offset);
+  adc_0 = (adc_0 - offset) * vu_0 / (vu_0 - offset);
+
+  // response
+  if (adc_7 > last_vu_l   + vu_diff)   last_vu_l   += vu_diff;   else last_vu_l   = adc_7;
+  if (adc_0 > last_vu_r   + vu_diff)   last_vu_r   += vu_diff;   else last_vu_r   = adc_0;
+  if (adc_7 < last_peak_l - peak_diff) last_peak_l -= peak_diff; else last_peak_l = adc_7;
+  if (adc_0 < last_peak_r - peak_diff) last_peak_r -= peak_diff; else last_peak_r = adc_0;
+
+  show_vu_meter(0,   0, "L", last_vu_l, last_peak_l);
+  show_vu_meter(0, 120, "R", last_vu_r, last_peak_r);
 
   Serial.printf("elapse=%dms adc7=%d adc0=%d\n", millis() - last_ms, adc_7, adc_0);  // elapsed time
   delay(last_ms + loop_ms - millis());
