@@ -3,5 +3,8 @@
 
 #pragma once
 
-void make_vu_panel();
-void show_vu_meter(int location_x, int location_y, const char* left_right, int level1, int level2 = -1);
+void lcd_init();
+void lcd_clear();
+void make_panel_vu();
+void make_panel_mc();
+void show_meter(int location_x, int location_y, const char* left_right, int level1, int level2 = -1);
