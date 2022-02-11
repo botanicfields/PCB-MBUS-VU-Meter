@@ -1,5 +1,5 @@
-// Copyright 2021 BotanicFields, Inc.
-// VU meter on M5Stack
+// Copyright 2022 BotanicFields, Inc.
+// BF-037 VU meters on M5Stack
 
 #pragma once
 

@@ -1,13 +1,13 @@
-// Copyright 2021 BotanicFields, Inc.
-// VU meter on M5Stack
+// Copyright 2022 BotanicFields, Inc.
+// BF-037 VU meters on M5Stack
 
 #include <M5Stack.h>
 #include "esp_adc_cal.h"   // for esp_adc_cal_characteristics_t
 #include "BF_M5StackVuMeter.h"
 
 // for control loop
-const int loop_ms(50);  // 20fps
-unsigned int last_ms(0);
+const unsigned int loop_ms(50);  // 20fps
+      unsigned int last_ms(0);
 
 // for meters
 const int offset(142);  // offset 142mV at ground-level on ESP32 ADC
@@ -81,6 +81,7 @@ void setup()
     break;
   }
 
+  // loop control
   last_ms = millis();
 }
 
@@ -144,28 +145,28 @@ void loop()
   if (double_needle)
     switch (ch_select) {
     case left_ch:
-      show_meter(0, 0, "L", last_vu_left, last_peak_left);
+      show_meter(0,   0, "L", last_vu_left, last_peak_left);
       break;
     case right_ch:
-      show_meter(0, 0, "R", last_vu_right, last_peak_right);
+      show_meter(0,   0, "R", last_vu_right, last_peak_right);
       break;
     case stereo:
     default:
-      show_meter(0, 0, "L", last_vu_left, last_peak_left);
+      show_meter(0,   0, "L", last_vu_left, last_peak_left);
       show_meter(0, 120, "R", last_vu_right, last_peak_right);
       break;
     }
   else
     switch (ch_select) {
     case left_ch:
-      show_meter(0, 0, "L", last_vu_left);
+      show_meter(0,   0, "L", last_vu_left);
       break;
     case right_ch:
-      show_meter(0, 0, "R", last_vu_right);
+      show_meter(0,   0, "R", last_vu_right);
       break;
     case stereo:
     default:
-      show_meter(0, 0, "L", last_vu_left);
+      show_meter(0,   0, "L", last_vu_left);
       show_meter(0, 120, "R", last_vu_right);
       break;
     }

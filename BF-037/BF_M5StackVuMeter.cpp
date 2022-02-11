@@ -1,5 +1,5 @@
-// Copyright 2021 BotanicFields, Inc.
-// VU meter on M5Stack
+// Copyright 2022 BotanicFields, Inc.
+// BF-037 VU meters on M5Stack
 
 #include <M5GFX.h>
 #include "BF_M5StackVuMeter.h"
@@ -15,9 +15,6 @@ const int color_transparent(0);
       int color_background (0);
 const int color_almostblack(0x0841);  //   8,   8,   8
 const int color_darkred(0xc000);      // 192,   0,   0
-
-enum panel_mode { panel_vu, panel_mc };  // VU-meter, Mcintosh-like
-
 
 void lcd_init()
 {
@@ -61,7 +58,7 @@ void make_panel_vu()
   mask.setColorDepth(1);
   mask.createSprite(320, 120);
   mask.fillSprite(palette1);
-  mask.fillCircle(160, 450, 414, palette0);
+  mask.fillCircle(160, 450, 413, palette0);
   mask.fillCircle(160, 450, 400, palette1);
   mask.pushSprite(0, 0, palette0);
 
@@ -94,7 +91,7 @@ void make_panel_vu()
     }
   }
   mask.fillSprite(palette1);
-  mask.fillCircle(160, 450, 418, palette0);
+  mask.fillCircle(160, 450, 416, palette0);
   mask.fillCircle(160, 450, 400, palette1);
   mask.pushSprite(0, 0, palette0);
   mask.deleteSprite();
@@ -118,19 +115,19 @@ void make_panel_vu()
   panel.drawString("VU", 160, 90);
 
   panel.setFont(&fonts::FreeSans9pt7b);
-  panel.drawString("20",  15, 45);
-  panel.drawString("10",  65, 31);
-  panel.drawString("7",   95, 26);
-  panel.drawString("5",  120, 22);
-  panel.drawString("3",  147, 21);
-  panel.drawString("2",  167, 21);
-  panel.drawString("1",  186, 22);
-  panel.drawString("0",  210, 25);
+  panel.drawString("20",  17, 47);
+  panel.drawString("10",  67, 33);
+  panel.drawString("7",   96, 28);
+  panel.drawString("5",  120, 24);
+  panel.drawString("3",  148, 23);
+  panel.drawString("2",  167, 23);
+  panel.drawString("1",  186, 24);
+  panel.drawString("0",  210, 27);
 
   panel.setTextColor(palette3, palette1);
-  panel.drawString("1",  240, 30);
-  panel.drawString("2",  270, 35);
-  panel.drawString("3",  305, 45);
+  panel.drawString("1",  238, 32);
+  panel.drawString("2",  268, 37);
+  panel.drawString("3",  303, 47);
 
   // draw frame
   panel.drawRect(0, 0, 320, 120, palette2);
